@@ -20,6 +20,20 @@ $(function () {
 	hoverSubMenu()
 	search()
 	share()
+	address()
+
+	// 5. 鼠标移入移出切换地址的显示隐藏
+	function address() {
+		var $select = $('#store_select')
+		$select.hover(function () {
+				$(this).children(':gt(0)').show()
+			}, function () {
+				$(this).children(':gt(0)').hide()
+			})
+			.children(':last').click(function () {
+				$select.children(':gt(0)').hide()
+			})
+	}
 
 	// 4. 点击显示或者隐藏更多的分享图标
 	function share() {
@@ -39,7 +53,7 @@ $(function () {
 				// 去打开
 				$parent.css('width', 200)
 				$as.show()
-				$b.addClass('backword')
+				$b.addClass('backward')
 			}
 
 			isOpen = !isOpen
