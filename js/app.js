@@ -16,10 +16,10 @@
  */
 
 $(function () {
-	show_hide()
+	showHide()
 
 	// 1. 鼠标移入显示,移出隐藏
-	function show_hide() {
+	function showHide() {
 		$('[name=show_hide]').hover(
 			function () {
 				var id = this.id + '_items'
@@ -27,9 +27,23 @@ $(function () {
 				$('#' + id).show()
 			},
 			function () {
-				// 添加注释 测试git
 				var id = this.id + '_items'
 				$('#' + id).hide()
+			}
+		)
+	}
+
+	// 2. 鼠标移动切换二级导航菜单的切换显示和隐藏
+	hoverSubMenu()
+	function hoverSubMenu() {
+		$('#category_items>div.cate_item').hover(
+			function () {
+				console.log(11)
+
+				$(this).children('.sub_cate_box').show()
+			},
+			function () {
+				$(this).children(':last').hide()
 			}
 		)
 	}
