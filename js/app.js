@@ -24,6 +24,85 @@ $(function () {
 	clickTabs()
 	hoverMiniCar()
 	clickProductTabs()
+	clickSlideImg()
+
+	// 9. 点击向右/左, 移动当前展示商品的小图片
+	function clickSlideImg() {
+		var $bigImg = $('#mediumImg')
+		var $ul = $('#icon_list')
+		var $lis = $('#icon_list>li')
+		var $forward = $('#preview>h1>a:last')
+		var $backward = $('#preview>h1>a:first')
+
+		var imgWidth = $lis.eq(1).width()
+		console.log(imgWidth);
+
+		var showCount = 5
+		var moveCount = 0
+
+		// 初始化 箭头是否可点击
+		if ($lis.length > showCount) {
+			$forward.attr('class', 'forward')
+		}
+
+		// 点击forward
+		$forward.click(function () {
+			if (moveCount === $lis.length - showCount) {
+				return
+			}
+			moveCount++
+			if (moveCount === $lis.length - showCount) {
+				$forward.attr('class', 'forward_disabled')
+			}
+			$backward.attr('class', 'backward')
+
+			console.log(-imgWidth * moveCount);
+
+			$ul.css('left', -imgWidth * moveCount)
+
+			// var newSrc = 'images/products/product-s' + (moveCount + 1) + '-m.jpg'
+			// $bigImg.attr('src', newSrc)
+		})
+
+		// 点击 backward
+		$backward.click(function () {
+			if (moveCount === 0) {
+				return
+			}
+			moveCount--
+			if (moveCount === 0) {
+				$backward.attr('class', 'backward_disabled')
+			}
+			$forward.attr('class', 'forward')
+
+			$ul.css('left', -imgWidth * moveCount)
+
+			// var newSrc = 'images/products/product-s' + (moveCount + 1) + '-m.jpg'
+			// $bigImg.attr('src', newSrc)
+		})
+
+		var index = 0
+		// 1.鼠标悬浮 显示共色框, 更换当前图片到大的图片框
+		$lis.hover(function () {
+			var targetIndex = $(this).index()
+			console.log(targetIndex);
+			$lis.eq(index).children('img').removeClass('hoveredThumb')
+			$lis.eq(targetIndex).children('img').addClass('hoveredThumb')
+			// $lis.children('img')[targetIndex].className = 'hoveredThumb'
+			// this.children[0].className = 'hoveredThumb'
+
+			// 显示当前图片 images/products/product-s1-m.jpg
+			var newSrc = 'images/products/product-s' + (targetIndex + 1) + '-m.jpg'
+			$bigImg.attr('src', newSrc)
+
+			index = targetIndex
+		}, function () {
+			$lis.children('img').removeClass('hoveredThumb')
+		})
+
+		// 
+
+	}
 
 	// 8. 点击切换产品选项 (商品详情等显示出来)
 	function clickProductTabs() {
@@ -62,7 +141,6 @@ $(function () {
 			// this.className = ''
 		})
 	}
-
 
 	// 6. 点击切换地址tab
 	function clickTabs() {
