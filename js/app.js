@@ -25,8 +25,92 @@ $(function () {
 	hoverMiniCar()
 	clickProductTabs()
 	clickSlideImg()
+	bigImg()
+
+	// 11. 当鼠标在中图上移动时, 显示对应大图的附近部分区域
+	function bigImg() {
+		var $mediumImg = $('#mediumImg')
+		var $mask = $('#mask')
+		var $maskTop = $('#maskTop')
+		var maskWidth = $mask.width()
+		var maskHeight = $mask.height()
+		var $largeImgContainer = $('#largeImgContainer')
+		var $loading = $('#loading')
+		var $largeImg = $('#largeImg')
+
+		var maskTopWidth = $maskTop.width()
+		var maskTopHeight = $maskTop.height()
+
+		$maskTop.hover(function () {
+			// 1. 鼠标悬浮小黄块出现在鼠标正下方, 显示大图
+			// 小黄块
+			$mask.show()
+
+			// 大图
+			var src = $mediumImg.attr('src').replace('-m.', '-l.')
+			$largeImg.attr('src', src)
+			$largeImgContainer.show()
+
+			$largeImg.on('load', function () {
+				var largeImgWidth = $largeImg.width()
+				var largeImgHeight = $largeImg.height()
+
+				$largeImgContainer.css({
+					width: largeImgWidth / 2,
+					height: largeImgHeight / 2
+				})
+
+				$loading.hide()
+				$largeImg.show()
+
+				$maskTop.mousemove(function (e) {
+
+					var left = e.offsetX - maskWidth / 2
+					var top = e.offsetY - maskHeight / 2
+					if (left >= maskTopWidth - maskWidth) {
+						left = maskTopWidth - maskWidth
+					} else if (left <= 0) {
+						left = 0
+					}
+
+					if (top >= maskTopHeight - maskHeight) {
+						top = maskTopHeight - maskHeight
+					} else if (top <= 0) {
+						top = 0
+					}
+					// console.log(offsetX);
+					$mask.css({
+						left: left,
+						top: top
+					})
+
+					// 移动大图
+					$largeImg.css({
+						left: -largeImgWidth / maskTopWidth * left,
+						top: -largeImgHeight / maskTopHeight * top
+					})
+
+				})
+			})
+
+
+		}, function () {
+			$mask.hide()
+			$largeImgContainer.hide()
+			$loading.show()
+			$largeImg.hide()
+
+
+		})
+
+		// 2. 显示大图对应的部分
+		// 3. 鼠标移动, 大图也移动
+		// 4. 小黄块到边缘时, 不再移动
+
+	}
 
 	// 9. 点击向右/左, 移动当前展示商品的小图片
+	// 10. 当鼠标悬停在某个小图上, 在上方显示对应的中图
 	function clickSlideImg() {
 		var $bigImg = $('#mediumImg')
 		var $ul = $('#icon_list')
@@ -35,7 +119,6 @@ $(function () {
 		var $backward = $('#preview>h1>a:first')
 
 		var imgWidth = $lis.eq(1).width()
-		console.log(imgWidth);
 
 		var showCount = 5
 		var moveCount = 0
@@ -56,7 +139,6 @@ $(function () {
 			}
 			$backward.attr('class', 'backward')
 
-			console.log(-imgWidth * moveCount);
 
 			$ul.css('left', -imgWidth * moveCount)
 
@@ -92,7 +174,7 @@ $(function () {
 			// this.children[0].className = 'hoveredThumb'
 
 			// 显示当前图片 images/products/product-s1-m.jpg
-			var newSrc = 'images/products/product-s' + (targetIndex + 1) + '-m.jpg'
+			var newSrc = $(this).children().attr('src').replace('.jpg', '-m.jpg')
 			$bigImg.attr('src', newSrc)
 
 			index = targetIndex
@@ -230,4 +312,8 @@ $(function () {
 			}
 		)
 	}
+
+	function s() {
+        $('#add_consult')
+    }
 })
