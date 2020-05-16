@@ -22,6 +22,47 @@ $(function () {
 	share()
 	address()
 	clickTabs()
+	hoverMiniCar()
+	clickProductTabs()
+
+	// 8. 点击切换产品选项 (商品详情等显示出来)
+	function clickProductTabs() {
+		var index = 0
+		var $lis = $('#product_detail>ul>li')
+
+		var $divs = $('#product_detail').children('div:gt(0)')
+		// $('#product_detail>ul').delegate('li', 'click', function () {
+		$lis.click(function () {
+			var targetIndex = $(this).index()
+
+			$lis.removeClass('current')
+			this.className = 'currrent'
+
+			$divs.hide()
+			$divs[targetIndex].style.display = 'block'
+			$divs.eq(targetIndex).show()
+
+			// $lis[index].className = ''
+			// this.className = 'current'
+			// $divs[index].style.display = 'none'
+			// $divs[targetIndex].style.display = 'block'
+			// index = targetIndex
+		})
+	}
+
+	// 7. 鼠标移入移出切换显示迷你购物车
+	function hoverMiniCar() {
+		$('#minicart').hover(function () {
+			$(this).children('div').show()
+			$(this).addClass('minicart')
+			// this.className = 'miniCar'
+		}, function () {
+			$(this).children('div').hide()
+			$(this).removeClass('minicart')
+			// this.className = ''
+		})
+	}
+
 
 	// 6. 点击切换地址tab
 	function clickTabs() {
@@ -89,8 +130,6 @@ $(function () {
 	function hoverSubMenu() {
 		$('#category_items>div.cate_item').hover(
 			function () {
-				console.log(11)
-
 				$(this).children('.sub_cate_box').show()
 			},
 			function () {
