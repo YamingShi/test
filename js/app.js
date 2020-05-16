@@ -27,6 +27,7 @@ $(function () {
 				$('#' + id).show()
 			},
 			function () {
+				// 添加注释 测试git
 				var id = this.id + '_items'
 				$('#' + id).hide()
 			}
